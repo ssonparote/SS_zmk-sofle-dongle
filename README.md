@@ -7,6 +7,8 @@ For the left side, paste in "eyelash_sofle_peripheral_left nice_view_battery-nic
 
 If you flash your device you do so at your own risk. Make sure you have backup firmware in case this is not compatible with your board. 
 
+https://www.reddit.com/r/ErgoMechKeyboards/comments/1l6oiy1/sofle_from_aliexpress_dongle_heres_where_you_find/
+
 # Sofle Keymap
 <img src="keymap-drawer/eyelash_sofle.svg" >
 
