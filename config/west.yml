@@ -8,6 +8,8 @@ manifest:
       url-base: https://github.com/englmaxi
     - name: infely
       url-base: https://github.com/infely
+    - name: ssonparote
+      url-base: https://github.com/ssonparote
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -21,6 +23,9 @@ manifest:
       revision: main
     - name: nice-view-battery
       remote: infely
+      revision: main
+    - name: zmk-sofle-rgb
+      remote: ssonparote
       revision: main
   self:
     path: config
