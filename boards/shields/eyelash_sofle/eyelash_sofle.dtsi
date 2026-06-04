@@ -23,8 +23,15 @@
 
     /*
      * Per-layer per-key RGB (darknao rgb-layer feature).
-     * DIAGNOSTIC STATE: identity pixel-lookup + a readable 5-color cycle on the
-     * first 29 LEDs so we can read each half's physical WS2812 chain order.
+     * DIAGNOSTIC STATE 2 (BAND): identity pixel-lookup + 6 color bands so we can
+     * read each LED's index div 5. Combined with diagnostic 1 (index mod 5),
+     * exact LED index = 5*band + residue.
+     *   band 0 (idx 0-4)   = RED
+     *   band 1 (idx 5-9)   = GREEN
+     *   band 2 (idx 10-14) = BLUE
+     *   band 3 (idx 15-19) = YELLOW
+     *   band 4 (idx 20-24) = PURPLE
+     *   band 5 (idx 25-28) = WHITE
      * Phase 2 replaces pixel-lookup (per side, in the peripheral overlays) and
      * the per-layer bindings with the real color scheme.
      */
@@ -35,9 +42,9 @@
         diag_base {
             layer-id = <0>;
             bindings = <
-    &ug RED    &ug GREEN  &ug BLUE   &ug YELLOW &ug PURPLE &ug RED       &ug GREEN      &ug BLUE   &ug YELLOW &ug PURPLE &ug RED    &ug GREEN  &ug BLUE
-    &ug YELLOW &ug PURPLE &ug RED    &ug GREEN  &ug BLUE   &ug YELLOW    &ug PURPLE     &ug RED    &ug GREEN  &ug BLUE   &ug YELLOW &ug PURPLE &ug RED
-    &ug GREEN  &ug BLUE   &ug YELLOW &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+    &ug RED    &ug RED    &ug RED    &ug RED    &ug RED    &ug GREEN     &ug GREEN      &ug GREEN  &ug GREEN  &ug GREEN  &ug BLUE   &ug BLUE   &ug BLUE
+    &ug BLUE   &ug BLUE   &ug YELLOW &ug YELLOW &ug YELLOW &ug YELLOW    &ug YELLOW     &ug PURPLE &ug PURPLE &ug PURPLE &ug PURPLE &ug PURPLE &ug WHITE
+    &ug WHITE  &ug WHITE  &ug WHITE  &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
     &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
     &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
             >;
