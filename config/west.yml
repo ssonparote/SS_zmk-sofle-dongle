@@ -1,26 +1,21 @@
 manifest:
   remotes:
-    - name: zmkfirmware
-      url-base: https://github.com/zmkfirmware
+    - name: darknao
+      url-base: https://github.com/darknao
     - name: englmaxi
       url-base: https://github.com/englmaxi
-    - name: geratrevino115
-      url-base: https://github.com/geratrevino115
-    - name: ssonparote
-      url-base: https://github.com/ssonparote
+    - name: infely
+      url-base: https://github.com/infely
   projects:
     - name: zmk
-      remote: zmkfirmware
-      revision: main
+      remote: darknao
+      revision: rgb-layer-25.08
       import: app/west.yml
     - name: zmk-dongle-display
       remote: englmaxi
-      revision: main
+      revision: c6c4be11c5ede722086a2a1f355cec9c101b9390
     - name: nice-view-battery
-      remote: geratrevino115
-      revision: main
-    - name: zmk-sofle-rgb
-      remote: ssonparote
+      remote: infely
       revision: main
   self:
     path: config
