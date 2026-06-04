@@ -6,6 +6,8 @@
 */
 #include <dt-bindings/led/led.h>
 #include <dt-bindings/zmk/matrix_transform.h>
+#include <dt-bindings/zmk/rgb_colors.h>
+#include <behaviors/ug_color.dtsi>
 #include "eyelash_sofle-layouts.dtsi"
 
 / {
@@ -17,6 +19,29 @@
         zmk,backlight = &backlight;
         zmk,physical-layout = &eyelash_sofle_layout;
 
+    };
+
+    /*
+     * Per-layer per-key RGB (darknao rgb-layer feature).
+     * DIAGNOSTIC STATE: identity pixel-lookup + a readable 5-color cycle on the
+     * first 29 LEDs so we can read each half's physical WS2812 chain order.
+     * Phase 2 replaces pixel-lookup (per side, in the peripheral overlays) and
+     * the per-layer bindings with the real color scheme.
+     */
+    rgbmap: underglow-layer {
+        compatible = "zmk,underglow-layer";
+        pixel-lookup = <0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28>;
+
+        diag_base {
+            layer-id = <0>;
+            bindings = <
+    &ug RED    &ug GREEN  &ug BLUE   &ug YELLOW &ug PURPLE &ug RED       &ug GREEN      &ug BLUE   &ug YELLOW &ug PURPLE &ug RED    &ug GREEN  &ug BLUE
+    &ug YELLOW &ug PURPLE &ug RED    &ug GREEN  &ug BLUE   &ug YELLOW    &ug PURPLE     &ug RED    &ug GREEN  &ug BLUE   &ug YELLOW &ug PURPLE &ug RED
+    &ug GREEN  &ug BLUE   &ug YELLOW &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+            >;
+        };
     };
 
     backlight: pwmleds {
