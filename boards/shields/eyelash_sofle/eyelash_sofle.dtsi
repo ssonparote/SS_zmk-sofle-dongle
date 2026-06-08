@@ -45,11 +45,11 @@
             layer-id = <0>;
             /* dim white on all 6 cols (0-5 / 7-12) + both thumbs (57,59) */
             bindings = <
-    &ug 0x303030 &ug 0x303030 &ug 0x303030 &ug 0x303030 &ug 0x303030 &ug 0x303030   &ug ___   &ug 0x303030 &ug 0x303030 &ug 0x303030 &ug 0x303030 &ug 0x303030 &ug 0x303030
+    &ug 0x808080 &ug 0x808080 &ug 0x808080 &ug 0x808080 &ug 0x808080 &ug 0x808080   &ug ___   &ug 0x808080 &ug 0x808080 &ug 0x808080 &ug 0x808080 &ug 0x808080 &ug 0x808080
     &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
     &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
     &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
-    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug 0x303030  &ug ___        &ug 0x303030 &ug ___  &ug ___    &ug ___    &ug ___
+    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug 0x808080  &ug ___        &ug 0x808080 &ug ___  &ug ___    &ug ___    &ug ___
             >;
         };
 
