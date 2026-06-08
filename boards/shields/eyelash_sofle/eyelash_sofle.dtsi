@@ -22,31 +22,58 @@
     };
 
     /*
-     * Per-layer per-key RGB (darknao rgb-layer feature).
-     * DIAGNOSTIC STATE 4 (COLUMN MAP): identity pixel-lookup, chain-length=29,
-     * light the 7 live nodes (0-6) in 7 distinct colors, everything else off:
-     *   0=RED 1=GREEN 2=BLUE 3=YELLOW 4=PURPLE 5=TEAL 6=WHITE
-     * Tests the per-column-ganging hypothesis (anchor probe proved only ~7 nodes
-     * are driven; node 0 = left far-right thumb).
-     *   - 6 whole COLUMNS + thumb, each a solid distinct color -> per-column by
-     *     design (each column's per-key LEDs share one node); every key lights.
-     *   - 7 isolated single keys -> broken chain after node ~7 (hardware fix).
-     * Also maps which node drives which column (read colors left-to-right).
-     * Phase C builds the real per-layer scheme on the confirmed topology.
+     * Per-layer per-COLUMN RGB (darknao rgb-layer feature).
+     * Hardware reality: 7 addressable nodes/half = 6 columns + thumb (each
+     * column's per-key LEDs are ganged -> whole column shows one color).
+     * pixel-lookup is set PER SIDE in the peripheral overlays:
+     *   LEFT  = <57 5 4 3 2 1 0>   (node0 thumb; node1 inner col .. node6 outer)
+     *   RIGHT = <59 7 8 9 10 11 12> (node0 thumb; node1 inner col .. node6 outer)
+     * So shared bindings indices: left cols 0-5 + thumb 57; right cols 7-12 +
+     * thumb 59. (col 6 = encoder/center key, no LED node.)
+     * Scheme (Functional):
+     *   base (0): dim white on all columns + thumbs
+     *   nav  (1): left arrow/nav cols (1-4) BLUE, right numpad cols (7-10) TEAL
+     *   fn   (2): all columns + thumbs PURPLE
+     * Enable the layer effect at runtime once: Sys+T (saved to settings).
      */
     rgbmap: underglow-layer {
         compatible = "zmk,underglow-layer";
-        pixel-lookup = <0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28>;
+        /* default (left); right overlay overrides. 7 nodes only. */
+        pixel-lookup = <57 5 4 3 2 1 0>;
 
-        diag_colmap {
+        base_layer {
             layer-id = <0>;
-            /* idx 0-6 = RED GREEN BLUE YELLOW PURPLE TEAL WHITE, rest off */
+            /* dim white on all 6 cols (0-5 / 7-12) + both thumbs (57,59) */
             bindings = <
-    &ug RED    &ug GREEN  &ug BLUE   &ug YELLOW &ug PURPLE &ug TEAL      &ug WHITE      &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+    &ug 0x303030 &ug 0x303030 &ug 0x303030 &ug 0x303030 &ug 0x303030 &ug 0x303030   &ug ___   &ug 0x303030 &ug 0x303030 &ug 0x303030 &ug 0x303030 &ug 0x303030 &ug 0x303030
+    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug 0x303030  &ug ___        &ug 0x303030 &ug ___  &ug ___    &ug ___    &ug ___
+            >;
+        };
+
+        nav_layer {
+            layer-id = <1>;
+            /* left arrow/nav cols 1-4 = BLUE; right numpad cols 7-10 = TEAL */
+            bindings = <
+    &ug ___    &ug BLUE   &ug BLUE   &ug BLUE   &ug BLUE   &ug ___       &ug ___        &ug TEAL   &ug TEAL   &ug TEAL   &ug TEAL   &ug ___    &ug ___
     &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
     &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
     &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
     &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+            >;
+        };
+
+        fn_layer {
+            layer-id = <2>;
+            /* all columns + thumbs PURPLE */
+            bindings = <
+    &ug PURPLE &ug PURPLE &ug PURPLE &ug PURPLE &ug PURPLE &ug PURPLE    &ug ___        &ug PURPLE &ug PURPLE &ug PURPLE &ug PURPLE &ug PURPLE &ug PURPLE
+    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug PURPLE    &ug ___        &ug PURPLE &ug ___    &ug ___    &ug ___    &ug ___
             >;
         };
     };
@@ -163,7 +190,7 @@
         spi-max-frequency = <4000000>;
 
         /* WS2812 */
-        chain-length = <29>; /* one per key, per half */
+        chain-length = <7>; /* 7 addressable nodes/half: 6 columns + thumb (column-ganged) */
         spi-one-frame = <0x70>;
         spi-zero-frame = <0x40>;
 

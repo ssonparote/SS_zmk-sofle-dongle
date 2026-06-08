@@ -6,6 +6,11 @@
 */
 #include "eyelash_sofle.dtsi"
 
+/* RIGHT half RGB: node0 thumb -> idx59; node1 inner col -> idx7 ... node6 outer col -> idx12 */
+&rgbmap {
+    pixel-lookup = <59 7 8 9 10 11 12>;
+};
+
 &kscan0 {
     compatible = "zmk,kscan-gpio-matrix";
     row-gpios
