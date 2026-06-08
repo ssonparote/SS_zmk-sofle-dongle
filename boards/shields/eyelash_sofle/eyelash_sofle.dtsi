@@ -23,31 +23,28 @@
 
     /*
      * Per-layer per-key RGB (darknao rgb-layer feature).
-     * DIAGNOSTIC STATE 3 (ANCHOR PROBE): identity pixel-lookup, chain-length=29,
-     * light only 4 widely-spaced nodes in distinct colors, everything else off:
-     *   index 0  = RED
-     *   index 10 = BLUE
-     *   index 20 = PURPLE
-     *   index 28 = WHITE
-     * Decisive test for "are high-index LEDs alive?". Earlier diag1 (mod 5) and
-     * diag2 (band/div 5) both showed only colors mapped to indices 0-6, implying
-     * only ~7 nodes are driven despite chain-length=29.
-     *   - >=2 of the 4 colors appear on distinct keys -> nodes >7 are LIVE.
-     *   - only RED appears -> only ~7 nodes driven on this unit.
-     * Phase C replaces pixel-lookup (per side, in the peripheral overlays) and
-     * the per-layer bindings with the real color scheme.
+     * DIAGNOSTIC STATE 4 (COLUMN MAP): identity pixel-lookup, chain-length=29,
+     * light the 7 live nodes (0-6) in 7 distinct colors, everything else off:
+     *   0=RED 1=GREEN 2=BLUE 3=YELLOW 4=PURPLE 5=TEAL 6=WHITE
+     * Tests the per-column-ganging hypothesis (anchor probe proved only ~7 nodes
+     * are driven; node 0 = left far-right thumb).
+     *   - 6 whole COLUMNS + thumb, each a solid distinct color -> per-column by
+     *     design (each column's per-key LEDs share one node); every key lights.
+     *   - 7 isolated single keys -> broken chain after node ~7 (hardware fix).
+     * Also maps which node drives which column (read colors left-to-right).
+     * Phase C builds the real per-layer scheme on the confirmed topology.
      */
     rgbmap: underglow-layer {
         compatible = "zmk,underglow-layer";
         pixel-lookup = <0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28>;
 
-        diag_anchor {
+        diag_colmap {
             layer-id = <0>;
-            /* idx:  0=RED  10=BLUE  20=PURPLE  28=WHITE, all others off */
+            /* idx 0-6 = RED GREEN BLUE YELLOW PURPLE TEAL WHITE, rest off */
             bindings = <
-    &ug RED    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug BLUE   &ug ___    &ug ___
-    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug PURPLE &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
-    &ug ___    &ug ___    &ug WHITE  &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+    &ug RED    &ug GREEN  &ug BLUE   &ug YELLOW &ug PURPLE &ug TEAL      &ug WHITE      &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
+    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
     &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
     &ug ___    &ug ___    &ug ___    &ug ___    &ug ___    &ug ___       &ug ___        &ug ___    &ug ___    &ug ___    &ug ___    &ug ___
             >;
