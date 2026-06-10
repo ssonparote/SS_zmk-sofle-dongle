@@ -6,6 +6,8 @@ manifest:
       url-base: https://github.com/englmaxi
     - name: infely
       url-base: https://github.com/infely
+    - name: mctechnology17
+      url-base: https://github.com/mctechnology17
   projects:
     - name: zmk
       remote: darknao
@@ -17,5 +19,10 @@ manifest:
     - name: nice-view-battery
       remote: infely
       revision: main
+    # Gem-style nice!view peripheral display. Pinned to a known commit;
+    # ZMK v0.3.0-tested = Zephyr 3.5.0 / LVGL v8 = our darknao stack.
+    - name: zmk-nice-oled
+      remote: mctechnology17
+      revision: 46f824abb2bd
   self:
     path: config
